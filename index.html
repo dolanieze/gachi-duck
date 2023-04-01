@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<title>игра утки</title>
+	<style type="text/css">
+		.duck{
+			height: 100px;
+			width: 100px;
+			position: absolute;
+			background-size: 100% 100%;
+		}
+		.div-1{
+			height: 250px;
+			width: 300px;
+			margin-top: 15px;
+			margin-left: 15px;
+			background-color:orange;
+			border-radius: 15px;
+		}
+	</style>
+</head>
+<body style="background-image: url(gym.webp);background-size: cover;">
+	<div style="display: none;" class="col-12 pobeda text-center">
+		<img src="pobeda.jpg" style="height: 200px; margin-top: 150px;">
+	</div>
+	<div style="display: none;" class="col-12 lose text-center">
+		<img src="lose.png" style="height: 200px; margin-top: 150px;">
+	</div>
+<div class="body">	
+	<button class="btn bg-warning text-white fw-bold fs-4 mt-1 ms-1">Нажми на меня</button>
+	<div class="div-1" style="display:none; padding-top: 20px;">
+		<p class="fs-4 fw-bold ms-5 text-white">score:<span class="score text-white fs-4 fw-bold">0</span></p>
+		<p class="fs-4 fw-bold ms-5 text-white">Наберите 10 очков за 20 секунд
+		 белая = хорошо чёрная = плохо</p>
+	</div>
+</div>		
+	<script type="text/javascript">
+		let point = 0
+		let types = ["good","bad"]
+		let y = [250,450,650]
+		let score = 0
+		let createduck = function(){
+			let duck = document.createElement("div");
+			document.body.appendChild(duck);
+			duck.classList.add('duck')
+			randx = Math.round(Math.random()*800 + 300)
+			duck.style.left = randx + "px"
+			randy = Math.round(Math.random()*2)
+			duck.style.top = y[randy] + "px"
+			let randtype = Math.round(Math.random())
+			duck.myType = types[randtype];
+			if(duck.myType == "good"){
+					duck.style.backgroundImage = "url(utka.png)"
+				}
+			else if(duck.myType == "bad"){
+					duck.style.backgroundImage = "url(gachi.jpg)"
+				}
+			console.dir(duck)
+			duck.onclick=function(){
+				duck.style.display = "none"
+				if(duck.myType == "good"){
+					point = point + 1
+					document.querySelector(".score").innerHTML = point
+				}
+				if(duck.myType == "bad"){
+					point = point - 1
+					document.querySelector(".score").innerHTML = point
+				}
+			}	
+		}
+		let vremya = function(){
+			clearInterval(interval)
+			if (score >= 10) {
+			document.querySelector(".body").style.display = "none"
+			document.querySelector(".pobeda").style.display = "block"
+		}
+			else{
+			document.querySelector(".body").style.display = "none"
+			document.querySelector(".lose").style.display = "block"
+		}
+		}
+		document.querySelector('.btn').onclick=function(){
+			interval = setInterval(createduck, 500)
+			document.querySelector('.btn').style.display="none"
+			document.querySelector(".div-1").style.display = "block"
+			setTimeout(vremya, 20000)
+		}	
+	</script>
+</body>
+</html>
